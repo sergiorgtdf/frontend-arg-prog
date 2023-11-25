@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../style.css" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="box">
+            <div id="logo" class="google-logo" title="Google">
+                <img src="/frontend//public/task.svg" height="50px" alt="" />
+            </div>
+            <h2>Sign in</h2>
+            <p>Use a Google account</p>
+            <form>
+                <div class="inputBox">
+                    <input
+                        type="email"
+                        name="email"
+                        required=""
+                        onkeyup="this.setAttribute('value', this.value);"
+                        value="" />
+                    <label>E-mail address or telephone number</label>
+                </div>
+                <div class="inputBox">
+                    <input
+                        type="text"
+                        name="text"
+                        required=""
+                        onkeyup="this.setAttribute('value', this.value);"
+                        value="" />
+                    <label>Password</label>
+                </div>
+                <div class="forgot">
+                    <button type="button">Forgot your address?</button>
+                </div>
+                <input type="submit" name="sign-in" value="Sign In" />
+            </form>
+        </div>
+    </body>
+</html>
