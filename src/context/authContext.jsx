@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from "react";
-export const AuthContext = createContext();
+import { registerRequest, loginRequest } from "../api/auth.js";
+import { useEffect } from "react";
 
-import { registerRequest } from "../api/auth.js";
+export const AuthContext = createContext();
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
@@ -11,25 +12,57 @@ export const useAuth = () => {
     return context;
 };
 
-export const authProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+
+    const [isAuth, setIsAuth] = useState(false);
+
+    // Manejo el estado del  error
+    const [errorBack, setErroBack] = useState([]);
 
     // Registro de Usuario
     const signup = async (user) => {
         try {
             const respuesta = await registerRequest(user);
-            console.log(Response.data);
+            // console.log(respuesta.data);
             setUser(respuesta.data);
+            setIsAuth(true);
         } catch (error) {
-            console.log(error.Response.data);
+            // console.log(error.response.data);
+            setErroBack(error.response.data);
         }
     };
+
+    const signin = async (user) => {
+        try {
+            const respuesta = await loginRequest(user);
+            // console.log(Response.data);
+            setUser(respuesta.data);
+            setIsAuth(true);
+        } catch (error) {
+            // console.log(error.response.data);
+            setErroBack(error.response.data);
+        }
+    };
+
+    //borrar mensaje de error
+    useEffect(() => {
+        if (errorBack.length > 0) {
+            const timer = setTimeout(() => {
+                setErroBack([]);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [errorBack]);
 
     return (
         <AuthContext.Provider
             value={{
                 signup,
+                signin,
+                isAuth,
                 user,
+                errorBack,
             }}>
             {children}
         </AuthContext.Provider>

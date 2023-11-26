@@ -1,18 +1,41 @@
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../../api/auth";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "./style.css";
 
-//  import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/authContext";
 
 export const RegisterPg = () => {
-    const { register, handleSubmit } = useForm();
+    const {
+        register,
+        handleSubmit,
+        // formState: { errors },
+    } = useForm();
 
-    // const { signup } = useAuth();
+    const { signup, isAuth, errorBack } = useAuth();
+
+    // Efecto para que se redirecciones
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuth) navigate("/task");
+    }, [isAuth]);
+
+    //TODO: Borrar Mensaje error
+    useEffect(() => {
+        setTimeout(() => {
+            errorBack.length = 0;
+        }, 3000);
+    }, [errorBack]);
 
     const onSubmit = handleSubmit(async (value) => {
-        // conexion al servidor y elvia al usuario
-        console.log(value);
-        const respuesta = await registerRequest(value);
-        console.log(respuesta);
+        // conexion al servidor y envia al usuario
+        // console.log(value);
+        // const respuesta = await registerRequest(value);
+        // console.log(respuesta);
+        // Viene del context
+        signup(value);
     });
 
     return (
@@ -23,6 +46,11 @@ export const RegisterPg = () => {
             <h2>Register</h2>
             <p>Registrese para poder acceder</p>
             <form>
+                {errorBack.map((err, i) => (
+                    <div key={i} className="ErrLogin">
+                        {err}
+                    </div>
+                ))}
                 <div className="inputBox">
                     <input
                         type="text"
@@ -31,6 +59,7 @@ export const RegisterPg = () => {
                         placeholder=" "
                         {...register("username", { required: true })}
                     />
+
                     <label>Username </label>
                 </div>
 
@@ -57,11 +86,13 @@ export const RegisterPg = () => {
 
                 <div className="forgot">
                     <button type="button">
-                        <a to="/LoginPg">I Have an Account</a>
+                        <p>
+                            <Link to="/login">Ya tengo una cuenta</Link>
+                        </p>
                     </button>
                 </div>
                 <button onClick={onSubmit} className="Boton-enviar">
-                    Enviar
+                    Registrarse
                 </button>
             </form>
         </div>

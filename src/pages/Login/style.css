@@ -151,3 +151,13 @@ body {
     text-align: left;
     border: 0;
   }
+
+  .ErrLogin {
+    color: red;
+    font-size: 14px;
+    font-weight: 800;
+    
+    
+    
+    padding: 20px 20px 20px 0;
+  }

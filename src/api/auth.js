@@ -5,9 +5,14 @@ import axios from "axios";
 
 const API_URL = "http://localhost:4000";
 
-// export const registerRequest = (payload) => {
-//   return axios.post('/auth/register', payload);
-// }
+export const registerRequest = (payload) => {
+    return axios.post(`${API_URL}/api/signup`, payload);
+};
 
-export const registerRequest = (user) =>
-    axios.post(`${API_URL}/api/signup`, user);
+export const loginRequest = (payload) => {
+    try {
+        return axios.post(`${API_URL}/api/signin`, payload);
+    } catch (error) {
+        console.log(error);
+    }
+};
