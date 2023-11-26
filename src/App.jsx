@@ -7,17 +7,23 @@ import RegisterPg from "./pages/Login/RegisterPg";
 import TaskPg from "./pages/TaskPg";
 import ProfilePg from "./pages/ProfilePg";
 import { AuthProvider } from "./context/authContext";
+import { PrivateRoutes } from "./routes/PrivateRoutes";
 
 function App() {
     return (
         <AuthProvider>
             <BrowserRouter>
                 <Routes>
+                    {/* Rutas publicas */}
                     <Route path="/" element={<HomePg />} />
                     <Route path="/login" element={<LoginPg />} />
                     <Route path="/register" element={<RegisterPg />} />
-                    <Route path="/task" element={<TaskPg />} />
-                    <Route path="/profile" element={<ProfilePg />} />
+
+                    {/* Rutas privadas */}
+                    <Route element={<PrivateRoutes />}>
+                        <Route path="/task" element={<TaskPg />} />
+                        <Route path="/profile" element={<ProfilePg />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
