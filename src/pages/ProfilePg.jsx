@@ -1,3 +1,5 @@
+import CajaTexto from "../components/cajaTexto";
+
 const ProfilePg = () => {
     return (
         <div>

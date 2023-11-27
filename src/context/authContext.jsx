@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
-import { registerRequest, loginRequest } from "../api/auth.js";
+import { registerRequest, loginRequest, verifyToken } from "../api/auth.js";
 import { useEffect } from "react";
+import cookies from "js-cookie";
 
 export const AuthContext = createContext();
 
@@ -45,6 +46,12 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const signout = () => {
+        cookies.remove("token");
+        setIsAuth(false);
+        setUser(null);
+    };
+
     //borrar mensaje de error
     useEffect(() => {
         if (errorBack.length > 0) {
@@ -55,11 +62,39 @@ export const AuthProvider = ({ children }) => {
         }
     }, [errorBack]);
 
+    // guarda cookiek
+    useEffect(() => {
+        async function verifyLogin() {
+            const cookie = cookies.get();
+            // console.log(cookie.token);
+            if (cookie.token) {
+                try {
+                    const respuesta = await verifyToken(cookie.token);
+                    // console.log(respuesta);
+                    if (respuesta.data) {
+                        setUser(respuesta.data);
+                        setIsAuth(true);
+                    } else {
+                        cookies.remove("token");
+                        setIsAuth(false);
+                    }
+                } catch (error) {
+                    setIsAuth(false);
+                    setUser(null);
+                    cookies.remove("token");
+                    console.log(error.response);
+                }
+            }
+        }
+        verifyLogin();
+    }, []);
+
     return (
         <AuthContext.Provider
             value={{
                 signup,
                 signin,
+                signout,
                 isAuth,
                 user,
                 errorBack,
