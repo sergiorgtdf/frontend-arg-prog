@@ -4,7 +4,11 @@ import axios from "./setCredentials";
 // const API_URL = process.env.REACT_APP_API_URL;
 
 export const registerRequest = (payload) => {
-    return axios.post(`/api/signup`, payload);
+    try {
+        return axios.post(`/api/signup`, payload);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export const loginRequest = (payload) => {

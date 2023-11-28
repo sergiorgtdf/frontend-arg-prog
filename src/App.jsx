@@ -1,43 +1,58 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// Pages
 import HomePg from "./pages/HomePg";
 import LoginPg from "./pages/LoginPg";
 import RegisterPg from "./pages/RegisterPg";
 
-import TaskPg from "./pages/TaskPg";
-import ProfilePg from "./pages/ProfilePg";
+import TaskPg from "./pages/Tasks/TaskPg";
+import TaskFormPg from "./pages/Tasks/TaskFormPg";
+
 import BlogPg from "./pages/BlogPg";
+import ProfilePg from "./pages/ProfilePg";
+import SettingsPg from "./pages/SettingsPg";
+
 import { AuthProvider } from "./context/authContext";
-import { PrivateRoutes } from "./routes/PrivateRoutes";
-import TaskFormPg from "./pages/TaskFormPg";
-// import NavBar from "./components/NavBar";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { TaskProvider } from "./context/TasksContext";
+import NavBar from "./components/NavBar";
 
 function App() {
     return (
         <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    {/* <NavBar> */}
-                    {/* Rutas publicas */}
+            <TaskProvider>
+                <BrowserRouter>
+                    <NavBar />
+                    <Routes>
+                        {/* Rutas publicas */}
 
-                    <Route path="/" element={<HomePg />} />
-                    <Route path="/login" element={<LoginPg />} />
-                    <Route path="/register" element={<RegisterPg />} />
-                    <Route path="/newTask" element={<TaskFormPg />} />
+                        <Route path="/" element={<HomePg />} />
+                        <Route path="/login" element={<LoginPg />} />
+                        <Route path="/register" element={<RegisterPg />} />
 
-                    {/* Rutas privadas */}
-                    <Route element={<PrivateRoutes />}>
-                        <Route path="/task" element={<TaskPg />} />
-                        <Route path="/profile" element={<ProfilePg />} />
-                        <Route path="/blog" element={<BlogPg />} />
-                        <Route
-                            path="/logout"
-                            element={<h1>Not Found 404</h1>}
-                        />
-                    </Route>
-                    {/* </NavBar> */}
-                </Routes>
-            </BrowserRouter>
+                        {/* Rutas privadas */}
+                        <Route element={<ProtectedRoute />}>
+                            {/* Rutas de tareas */}
+                            <Route path="/task" element={<TaskPg />} />
+                            <Route path="/newTask" element={<TaskFormPg />} />
+                            <Route path="/task/:id" element={<TaskFormPg />} />
+
+                            {/* Rutas de usuario */}
+                            <Route path="/profile" element={<ProfilePg />} />
+
+                            <Route path="/settings" element={<SettingsPg />} />
+
+                            {/* Rutas de blog */}
+                            <Route path="/blog" element={<BlogPg />} />
+
+                            <Route
+                                path="/logout"
+                                element={<h1>Not Found 404</h1>}
+                            />
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </TaskProvider>
         </AuthProvider>
     );
 }

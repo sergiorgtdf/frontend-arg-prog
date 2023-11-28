@@ -15,6 +15,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [isAuth, setIsAuth] = useState(false);
 
@@ -28,7 +29,9 @@ export const AuthProvider = ({ children }) => {
             // console.log(respuesta.data);
             setUser(respuesta.data);
             setIsAuth(true);
+            setEvitaRedireccion(true);
         } catch (error) {
+            setIsAuth(false);
             // console.log(error.response.data);
             setErroBack(error.response.data);
         }
@@ -41,6 +44,7 @@ export const AuthProvider = ({ children }) => {
             setUser(respuesta.data);
             setIsAuth(true);
         } catch (error) {
+            setIsAuth(false);
             // console.log(error.response.data);
             setErroBack(error.response.data);
         }
@@ -48,6 +52,7 @@ export const AuthProvider = ({ children }) => {
 
     const signout = () => {
         cookies.remove("token");
+        console.log("adios");
         setIsAuth(false);
         setUser(null);
     };
@@ -62,28 +67,37 @@ export const AuthProvider = ({ children }) => {
         }
     }, [errorBack]);
 
+    // Verifica si el usuario esta logueado, cuando se recarga la pagina
+
     // guarda cookiek
     useEffect(() => {
         async function verifyLogin() {
             const cookie = cookies.get();
             // console.log(cookie.token);
-            if (cookie.token) {
-                try {
-                    const respuesta = await verifyToken(cookie.token);
-                    // console.log(respuesta);
-                    if (respuesta.data) {
-                        setUser(respuesta.data);
-                        setIsAuth(true);
-                    } else {
-                        cookies.remove("token");
-                        setIsAuth(false);
-                    }
-                } catch (error) {
+            if (!cookie.token) {
+                cookies.remove("token");
+                setIsAuth(false);
+                setUser(null);
+            }
+            try {
+                const respuesta = await verifyToken(cookie.token);
+                // console.log(respuesta);
+                if (!respuesta.data) {
                     setIsAuth(false);
                     setUser(null);
                     cookies.remove("token");
-                    console.log(error.response);
+
+                    setLoading(false);
                 }
+                setUser(respuesta.data);
+                setIsAuth(true);
+                setLoading(false);
+            } catch (error) {
+                setIsAuth(false);
+                setUser(null);
+                cookies.remove("token");
+                setLoading(false);
+                // console.log(error.response);
             }
         }
         verifyLogin();
@@ -95,6 +109,7 @@ export const AuthProvider = ({ children }) => {
                 signup,
                 signin,
                 signout,
+                loading,
                 isAuth,
                 user,
                 errorBack,
