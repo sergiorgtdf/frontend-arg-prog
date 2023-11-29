@@ -3,7 +3,7 @@ import axios from "./setCredentials";
 // GET ALL TASKS
 export const getTasks = () => {
     try {
-        return axios.get(`/api/getAllTask`);
+        return axios.get(`/task`);
     } catch (error) {
         console.log(error);
     }
@@ -12,7 +12,7 @@ export const getTasks = () => {
 // GET TASK BY ID
 export const getTaskById = (id) => {
     try {
-        return axios.get(`/api/getTaskById/${id}`);
+        return axios.get(`/task/${id}`);
     } catch (error) {
         console.log(error);
     }
@@ -21,7 +21,7 @@ export const getTaskById = (id) => {
 // CREATE TASK
 export const createTask = (payload) => {
     try {
-        return axios.post(`/api/task`, payload);
+        return axios.post(`/task`, payload);
     } catch (error) {
         console.log(error);
     }
@@ -30,7 +30,7 @@ export const createTask = (payload) => {
 // UPDATE TASK
 export const updateTask = (id, payload) => {
     try {
-        return axios.put(`/api/task/${id}`, payload);
+        return axios.put(`/task/${id}`, payload);
     } catch (error) {
         console.log(error);
     }
@@ -39,7 +39,7 @@ export const updateTask = (id, payload) => {
 // DELETE TASK
 export const deleteTask = (id) => {
     try {
-        return axios.delete(`/api/task/${id}`);
+        return axios.delete(`/task/${id}`);
     } catch (error) {
         console.log(error);
     }

@@ -8,7 +8,9 @@ import RegisterPg from "./pages/RegisterPg";
 import TaskPg from "./pages/Tasks/TaskPg";
 import TaskFormPg from "./pages/Tasks/TaskFormPg";
 
-import BlogPg from "./pages/BlogPg";
+import BlogPg from "./pages/Blog/BlogPg";
+import NewBlogPg from "./pages/Blog/NewBlogPg";
+
 import ProfilePg from "./pages/ProfilePg";
 import SettingsPg from "./pages/SettingsPg";
 
@@ -44,6 +46,7 @@ function App() {
 
                             {/* Rutas de blog */}
                             <Route path="/blog" element={<BlogPg />} />
+                            <Route path="/newblog" element={<NewBlogPg />} />
 
                             <Route
                                 path="/logout"

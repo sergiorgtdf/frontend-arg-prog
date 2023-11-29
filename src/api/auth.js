@@ -5,7 +5,7 @@ import axios from "./setCredentials";
 
 export const registerRequest = (payload) => {
     try {
-        return axios.post(`/api/signup`, payload);
+        return axios.post(`/signup`, payload);
     } catch (error) {
         console.log(error);
     }
@@ -13,7 +13,7 @@ export const registerRequest = (payload) => {
 
 export const loginRequest = (payload) => {
     try {
-        return axios.post(`/api/signin`, payload);
+        return axios.post(`/signin`, payload);
     } catch (error) {
         console.log(error);
     }
@@ -24,7 +24,7 @@ export const loginRequest = (payload) => {
 export const verifyToken = (payload) => {
     try {
         // console.log("verifyToken");
-        return axios.get(`/api/verifyToken`, payload);
+        return axios.get(`/verifyToken`, payload);
     } catch (error) {
         console.log(error);
     }

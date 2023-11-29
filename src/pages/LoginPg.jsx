@@ -1,8 +1,9 @@
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from "react-hot-toast";
+
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+
+import { Toaster } from "react-hot-toast";
 
 import { useAuth } from "../context/authContext";
 
@@ -13,15 +14,10 @@ const LoginPg = () => {
         formState: { errors },
     } = useForm();
 
-    const { signin, isAuth, errorBack, evitaRedireccion } = useAuth();
+    const { signin, isAuth, errorBack } = useAuth();
 
-    // Efecto para que se redirecciones
     const navigate = useNavigate();
-
-    //TODO: Me redirecciona a la pagina de login cuando ya estoy logueado, SIEMPRE
     useEffect(() => {
-        if (!evitaRedireccion) return;
-
         if (isAuth) navigate("/task");
     }, [isAuth]);
 
@@ -31,7 +27,6 @@ const LoginPg = () => {
 
     return (
         <>
-            {/* <NavbarPublic /> */}
             <div className="flex h-screen items-center justify-center">
                 <div className="bg-zinc-900 max-w-md p-8 rounded-md ">
                     <form className="" action="">
@@ -88,6 +83,7 @@ const LoginPg = () => {
                 </div>
                 <Toaster position="top-center" />
             </div>
+            <Toaster />
         </>
     );
 };
